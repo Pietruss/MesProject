@@ -28,12 +28,40 @@ public class Main {
         builderMatrixC.pcNumberCalculations(builderMatrixH);
         builderMatrixC.MatrixCCalculation();
 
-        BuilderMatrixHBC2D builderMatrixHBC2D = new BuilderMatrixHBC2D();
-        builderMatrixHBC2D.detJCalculations();
-        builderMatrixHBC2D.areaArrayInit();
+        AreaArray []areaArray;
 
         AreaGenerator areaGenerator = new AreaGenerator();
-        areaGenerator.areaStatusGenerator(grid, fileData);
+        areaArray = areaGenerator.areaStatusGenerator(grid, fileData);
+        for (int i = 0; i < 15; i++) {
+                System.out.println(areaArray[i].area[0] + " " + areaArray[i].area[1] + " " + areaArray[i].area[2] + " " + areaArray[i].area[3]);
+        }
+        double []detJ;
+        BuilderMatrixHBC2D builderMatrixHBC2D = new BuilderMatrixHBC2D(areaArray);
+        builderMatrixHBC2D.detJCalculations();
+        detJ = builderMatrixHBC2D.getDetJ();
+        for (int i = 0; i < 15; i++) {
+            System.out.println(i);
+            builderMatrixHBC2D.areaArrayInit(areaArray[i]);
+        }
+
+        Point [] surfaceIntegrationPoints = new Point[8];
+        surfaceIntegrationPoints[0] = new Point(-0.57, -1);
+        surfaceIntegrationPoints[1] = new Point(0.57, -1);
+        surfaceIntegrationPoints[2] = new Point(1, -0.57);
+        surfaceIntegrationPoints[3] = new Point(1, 0.57);
+        surfaceIntegrationPoints[4] = new Point(0.57, 1);
+        surfaceIntegrationPoints[5] = new Point(-0.57, 1);
+        surfaceIntegrationPoints[6] = new Point(-1, 0.57);
+        surfaceIntegrationPoints[7] = new Point(-1, -0.57);
+
+        VectorP vectorP = new VectorP();
+//        for (int i = 0; i < 8; i++) {
+//
+//        }
+        vectorP.vectorPCalculation(detJ, fileData.getTemperature(), surfaceIntegrationPoints[0]);
+
+
+
 
 
 

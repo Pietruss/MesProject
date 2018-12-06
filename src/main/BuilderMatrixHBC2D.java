@@ -2,8 +2,18 @@ package main;
 
 public class BuilderMatrixHBC2D {
     private float convection = 25.0f;
+    private AreaArray [] areaArray;
     private double[] area = {1, 1, 0, 0};
     private double[] lengthSide = {10, 8, 10, 8};
+
+    public void setDetJ(double[] detJ) {
+        this.detJ = detJ;
+    }
+
+    public double[] getDetJ() {
+        return detJ;
+    }
+
     private double[] detJ = new double[4];
     private double[][] area1 = new double[2][6];
     private double[][] area1pc2 = new double[4][4];
@@ -28,16 +38,19 @@ public class BuilderMatrixHBC2D {
         }
     }
 
+    public BuilderMatrixHBC2D(AreaArray[] areaArray) {
+        this.areaArray = areaArray;
+    }
 
     public void setArea(double[] area) {
         this.area = area;
     }
 
-    void matrixHCalculation(double[] area, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
+    void matrixHCalculation(AreaArray areaArray, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
         System.out.println("");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                matrixH[i][j] = areaPc1[i][j] * area[0] + areaPc2[i][j] * area[1] + areaPc3[i][j] * area[2] + areaPc4[i][j] * area[3];
+                matrixH[i][j] = areaPc1[i][j] * areaArray.area[0] + areaPc2[i][j] * areaArray.area[1] + areaPc3[i][j] * areaArray.area[2] + areaPc4[i][j] * areaArray.area[3];
                 System.out.print(matrixH[i][j] + " ");
             }
             System.out.println("");
@@ -61,7 +74,7 @@ public class BuilderMatrixHBC2D {
         }
     }
 
-    void areaArrayInit() {
+    void areaArrayInit(AreaArray areaArray) {
         area1[0][0] = -0.5773502692;
         area1[0][1] = -1;
         area1[0][2] = 0.7886751346;
@@ -122,15 +135,15 @@ public class BuilderMatrixHBC2D {
 
 
         returnArea1 = copyArray(areaCalculations(area1, 0));
-        printArray(returnArea1);
+//        printArray(returnArea1);
         returnArea2 = copyArray(areaCalculations(area2, 1));
-        printArray(returnArea2);
+//        printArray(returnArea2);
         returnArea3 = copyArray(areaCalculations(area3, 2));
-        printArray(returnArea3);
+//        printArray(returnArea3);
         returnArea4 = copyArray(areaCalculations(area4, 3));
-        printArray(returnArea4);
+//        printArray(returnArea4);
 
-        matrixHCalculation(area, returnArea1, returnArea2, returnArea3, returnArea4);
+        matrixHCalculation(areaArray, returnArea1, returnArea2, returnArea3, returnArea4);
 
 
     }

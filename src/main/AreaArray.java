@@ -6,4 +6,7 @@ public class AreaArray {
     public AreaArray(double[] area) {
         this.area = area;
     }
+
+    public AreaArray() {
+    }
 }
