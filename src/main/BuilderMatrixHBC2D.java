@@ -29,6 +29,10 @@ public class BuilderMatrixHBC2D {
     }
 
 
+    public void setArea(double[] area) {
+        this.area = area;
+    }
+
     void matrixHCalculation(double[] area, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
         System.out.println("");
         for (int i = 0; i < 4; i++) {

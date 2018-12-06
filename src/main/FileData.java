@@ -39,7 +39,7 @@ public class FileData {
     public int temperature;
 
     void openFileAndReadData() throws FileNotFoundException {
-        File file = new File("D:\\Informatyka\\Semestr5\\mes\\src\\main\\data.txt");
+        File file = new File("D:\\Informatyka\\Semestr5\\mes\\mes\\src\\main\\data.txt");
         Scanner scanner = new Scanner(file);
 
         while (scanner.hasNextLine()) {
