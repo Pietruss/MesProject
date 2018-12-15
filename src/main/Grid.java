@@ -18,6 +18,7 @@ public class Grid {
 
     public void nodeIDGeneration(FileData fileData) {
         int counterOfElements = 0;
+        System.out.println("\nAll information of elements:\n");
         for (int i = 0; i < fileData.getGridWidthNumberOfElements() - 1; ++i) {
             for (int j = 1; j < fileData.getGridHeightNumberOfElements(); ++j) {
                 int[] nodeID = new int[4];
@@ -26,9 +27,10 @@ public class Grid {
                 nodeID[2] = j + (i + 1) * fileData.getGridHeightNumberOfElements() + 1;
                 nodeID[3] = j + 1 + i * fileData.getGridHeightNumberOfElements();
 
-                this.elements[counterOfElements] = new Element(nodeID, fileData.getCoefficient());
-                this.elements[counterOfElements++].showElement();
+                this.elements[counterOfElements] = new Element(nodeID, fileData.getConductivity());
 
+                //show all id of element
+                this.elements[counterOfElements++].showElement();
 
             }
         }
@@ -36,12 +38,16 @@ public class Grid {
 
     public void elementsGeneration(FileData fileData) {
         int counterOfElements = 0;
+        System.out.println("\nAll information about node:\n");
         for (int i = 0; i < fileData.getGridWidthNumberOfElements(); ++i) {
             for (int j = 0; j < fileData.getGridHeightNumberOfElements(); ++j) {
                 this.nodes[counterOfElements] = new Node(i * (fileData.getGridWidth()) / (fileData.getGridWidthNumberOfElements() - 1), j * (fileData.getGridHeight()) / (fileData.getGridHeightNumberOfElements() - 1));
                 if (i == 0 || i == fileData.getGridWidthNumberOfElements() - 1 || j == 0 || j == fileData.getGridHeightNumberOfElements() - 1) {
                     this.nodes[counterOfElements].borderCondition = true;
                 }
+
+                //show all information about node
+
                 this.nodes[counterOfElements++].showNode();
             }
         }

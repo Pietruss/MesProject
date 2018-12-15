@@ -5,7 +5,6 @@ public class UniversalElement {
     private double[] ksiValueArray = {-0.577350269189626, -0.577350269189626, 0.577350269189626, 0.577350269189626};
     private double[] etaValueArray = {-0.577350269189626, 0.577350269189626, 0.577350269189626, -0.577350269189626};
 
-
     private double[][] dnDksiValueArray = new double[4][4];
     private double[][] dnDetaValueArray = new double[4][4];
 
@@ -32,7 +31,9 @@ public class UniversalElement {
                         dnDetaValueArray[i][j] = 0.25 * (1 - etaValueArray[i]);
                         break;
                 }
+                //show dN/dksi
 //                System.out.println(dnDksiValueArray[i][j]);
+                //show dN/deta
 //                System.out.println(dnDetaValueArray[i][j]);
             }
 //            System.out.println();

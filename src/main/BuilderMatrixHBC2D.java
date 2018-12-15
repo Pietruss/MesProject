@@ -1,10 +1,9 @@
 package main;
 
 public class BuilderMatrixHBC2D {
-    private float convection = 25.0f;
+    private float convection = 300;
     private AreaArray [] areaArray;
-    private double[] area = {1, 1, 0, 0};
-    private double[] lengthSide = {10, 8, 10, 8};
+    private double[] lengthSide = {0.03333, 0.03333,0.03333,0.03333};
 
     public void setDetJ(double[] detJ) {
         this.detJ = detJ;
@@ -42,9 +41,6 @@ public class BuilderMatrixHBC2D {
         this.areaArray = areaArray;
     }
 
-    public void setArea(double[] area) {
-        this.area = area;
-    }
 
     void matrixHCalculation(AreaArray areaArray, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
         System.out.println("");
@@ -71,6 +67,7 @@ public class BuilderMatrixHBC2D {
     void detJCalculations() {
         for (int i = 0; i < 4; i++) {
             detJ[i] = lengthSide[i] / 2;
+            System.out.print(detJ[i] + " ");
         }
     }
 

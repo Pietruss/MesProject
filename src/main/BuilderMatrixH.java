@@ -48,8 +48,8 @@ public class BuilderMatrixH {
     private double[][] matrixH = new double[4][4];
 
 
-    public void BuilderJacobian(UniversalElement universalElement, Grid grid) {
-        Node[] nodeArray = {grid.getNodesByID(0), grid.getNodesByID(6), grid.getNodesByID(7), grid.getNodesByID(1)};
+    public double [][] BuilderJacobian(UniversalElement universalElement, Grid grid) {
+        Node[] nodeArray = {grid.getNodesByID(0), grid.getNodesByID(4), grid.getNodesByID(5), grid.getNodesByID(1)};
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 switch (i) {
@@ -70,7 +70,7 @@ public class BuilderMatrixH {
 //                        System.out.print(integralPoints[i][j] + " ");
                         break;
                 }
-                System.out.println("");
+//                System.out.println("");
             }
         }
 
@@ -78,15 +78,14 @@ public class BuilderMatrixH {
         buildJ_1_1_1Calculation();
         dnDxCalculation(universalElement);
         dN_dx_dN_dx_dN_dy_dN_dyTDetCalculation(grid);
-        matrixHCalculation();
+        return matrixHCalculation();
 
     }
 
     public void detJCalculation(double[][] integralPoints) {
-
         for (int i = 0; i < 4; i++) {
             detJ[i] = integralPoints[0][i] * integralPoints[3][i] - integralPoints[i][1] * integralPoints[2][i];
-//            System.out.println(detJ[i] + " ");
+            System.out.println(detJ[i] + " ");
         }
     }
 
@@ -112,37 +111,38 @@ public class BuilderMatrixH {
                         break;
                 }
             }
-            System.out.println();
+//            System.out.println();
         }
     }
 
     private void dnDxCalculation(UniversalElement universalElement) {
+//        System.out.println("------------------");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 switch (i) {
                     case 0:
                         dnDxValueArray[i][j] = buildJ_1_1_1Array[0][0] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[1][0] * universalElement.getdnEtaValueArray(i, j);
                         dnDyValueArray[i][j] = buildJ_1_1_1Array[2][0] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[3][0] * universalElement.getdnEtaValueArray(i, j);
-//                        System.out.println(dnDyValueArray[i][j]);
+//                        System.out.println(dnDxValueArray[i][j]);
                         break;
                     case 1:
                         dnDxValueArray[i][j] = buildJ_1_1_1Array[0][1] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[1][1] * universalElement.getdnEtaValueArray(i, j);
                         dnDyValueArray[i][j] = buildJ_1_1_1Array[2][1] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[3][1] * universalElement.getdnEtaValueArray(i, j);
-//                         System.out.println(dnDyValueArray[i][j]);
+//                         System.out.println(dnDxValueArray[i][j]);
                         break;
                     case 2:
                         dnDxValueArray[i][j] = buildJ_1_1_1Array[0][2] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[1][2] * universalElement.getdnEtaValueArray(i, j);
                         dnDyValueArray[i][j] = buildJ_1_1_1Array[2][2] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[3][2] * universalElement.getdnEtaValueArray(i, j);
-//                        System.out.println(dnDyValueArray[i][j]);
+//                        System.out.println(dnDxValueArray[i][j]);
                         break;
                     case 3:
                         dnDxValueArray[i][j] = buildJ_1_1_1Array[0][3] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[1][3] * universalElement.getdnEtaValueArray(i, j);
                         dnDyValueArray[i][j] = buildJ_1_1_1Array[2][3] * universalElement.getDnDksiValueArrayById(i, j) + buildJ_1_1_1Array[3][3] * universalElement.getdnEtaValueArray(i, j);
-//                        System.out.println(dnDyValueArray[i][j]);
+//                        System.out.println(dnDxValueArray[i][j]);
                         break;
                 }
             }
-            System.out.println("");
+//            System.out.println("");
         }
     }
 
@@ -281,12 +281,15 @@ public class BuilderMatrixH {
         }
     }
 
-    private void matrixHCalculation() {
+    private double [][] matrixHCalculation() {
+        System.out.println("matrix h");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 matrixH[i][j] = dNdxdNdxTdNdxydNdyTDetK1Point[i][j] + dNdxdNdxTdNdxydNdyTDetK2Point[i][j] + dNdxdNdxTdNdxydNdyTDetK3Point[i][j] + dNdxdNdxTdNdxydNdyTDetK4Point[i][j];
                 System.out.print(matrixH[i][j] + " ");
             }
+            System.out.println("");
         }
+        return matrixH;
     }
 }

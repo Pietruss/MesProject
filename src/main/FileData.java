@@ -16,48 +16,105 @@ public class FileData {
         return gridWidthNumberOfElements;
     }
 
-    public int getGridHeight() {
+    public double getGridHeight() {
         return gridHeight;
     }
 
-    public int getGridWidth() {
+    public double getGridWidth() {
         return gridWidth;
     }
 
-    public int getCoefficient() {
-        return coefficient;
+    public int getCoefficientAlpha() {
+        return coefficientAlpha;
     }
 
-    public int getTemperature() {
-        return temperature;
+    public int getInitialTemperature() {
+        return InitialTemperature;
     }
 
     public int counterToReadFromFile;
-    public int gridHeight;
-    public int gridWidth;
-    public int coefficient;
-    public int temperature;
+    public double gridHeight;
+    public double gridWidth;
+    public int coefficientAlpha;
+    public int InitialTemperature;
+    public int simulationTime;
+    public int simulationStepTime;
+    public int ambientTemperature;
+    public double specificHeat;
+    public double conductivity;
+    public double density;
 
-    void openFileAndReadData() throws FileNotFoundException {
-        File file = new File("D:\\Informatyka\\Semestr5\\mes\\mes\\src\\main\\data.txt");
+    public int getSimulationTime() {
+        return simulationTime;
+    }
+
+    public int getSimulationStepTime() {
+        return simulationStepTime;
+    }
+
+    public int getAmbientTemperature() {
+        return ambientTemperature;
+    }
+
+    public double getSpecificHeat() {
+        return specificHeat;
+    }
+
+    public double getConductivity() {
+        return conductivity;
+    }
+
+    public double getDensity() {
+        return density;
+    }
+
+    public void openFileAndReadData() throws FileNotFoundException {
+        File file = new File("data.txt");
         Scanner scanner = new Scanner(file);
 
         while (scanner.hasNextLine()) {
             if (counterToReadFromFile == 0) {
-                gridHeight = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                InitialTemperature = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 1) {
-                gridWidth = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                simulationTime = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 2) {
-                gridHeightNumberOfElements = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                simulationStepTime = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 3) {
-                gridWidthNumberOfElements = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                ambientTemperature = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 4) {
-                coefficient = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                coefficientAlpha = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 5) {
-                temperature = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                gridHeight = Double.parseDouble(String.valueOf(scanner.next()));
+            } else if (counterToReadFromFile == 6){
+                gridWidth = Double.parseDouble(String.valueOf(scanner.next()));
+            } else if (counterToReadFromFile == 7){
+                gridHeightNumberOfElements = Integer.parseInt(String.valueOf(scanner.nextInt()));
+            } else if (counterToReadFromFile == 8){
+                gridWidthNumberOfElements = Integer.parseInt(String.valueOf(scanner.nextInt()));
+            } else if (counterToReadFromFile == 9){
+                specificHeat = Double.parseDouble(String.valueOf(scanner.nextDouble()));
+            } else if (counterToReadFromFile == 10){
+                conductivity = Double.parseDouble(String.valueOf(scanner.nextDouble()));
+            } else if (counterToReadFromFile == 11) {
+                density = Double.parseDouble(String.valueOf(scanner.nextDouble()));
             }
             scanner.nextLine();
             counterToReadFromFile++;
         }
+    }
+    public void showInputData(){
+        System.out.println("Initial temperature: " + getInitialTemperature());
+        System.out.println("Initial simulation time: " + getSimulationTime());
+        System.out.println("Initial simulation step time: " + getSimulationStepTime());
+        System.out.println("Initial ambient temperature: " + getAmbientTemperature());
+        System.out.println("Initial alpha: " + getCoefficientAlpha());
+        System.out.println("Initial height: " + getGridHeight());
+        System.out.println("Initial width: " + getGridWidth());
+        System.out.println("Initial height elements: " + getGridHeightNumberOfElements());
+        System.out.println("Initial width elements: " + getGridWidthNumberOfElements());
+        System.out.println("Initial specific heat: " + getSpecificHeat());
+        System.out.println("Initial conductivity: " + getConductivity());
+        System.out.println("Initial density: " + getDensity());
+
     }
 }

@@ -65,7 +65,6 @@ public class BuilderMatrixC {
     void pcNumberCalculations(BuilderMatrixH builderMatrixH) {
         detJ = builderMatrixH.getDetJ();
         for (int i = 0; i < 4; i++) {
-            System.out.println("Tomek------------------");
             switch (i) {
                 case 0:
                     pc1[i][0] = N1N2N3N4[i][0] * N1N2N3N4[i][0] * detJ[i] * conductivity * density;
@@ -161,11 +160,22 @@ public class BuilderMatrixC {
     }
 
     void MatrixCCalculation() {
+        System.out.println("\n------------");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 matrixC[i][j] = pc1[i][j] + pc2[i][j] + pc3[i][j] + pc4[i][j];
                 System.out.print(matrixC[i][j] + " ");
             }
+            System.out.println("");
+        }
+    }
+
+    void printArray(double [][]matrixGlobal){
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                System.out.println(matrixGlobal[i][j] + " ");
+            }
+            System.out.println("");
         }
     }
 }
