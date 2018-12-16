@@ -4,40 +4,59 @@ public class UniversalElement {
     private Point[] arrayOfIntegralPoints = {new Point((-1 / Math.sqrt(3)), (-1 / Math.sqrt(3))), new Point((1 / Math.sqrt(3)), (-1 / Math.sqrt(3))), new Point((1 / Math.sqrt(3)), (1 / Math.sqrt(3))), new Point((-1 / Math.sqrt(3)), (1 / Math.sqrt(3)))};
     private double[] ksiValueArray = {-0.577350269189626, -0.577350269189626, 0.577350269189626, 0.577350269189626};
     private double[] etaValueArray = {-0.577350269189626, 0.577350269189626, 0.577350269189626, -0.577350269189626};
+    private Point[] surfaceArrayOfIntegralPoints = {new Point(-1 / Math.sqrt(3), - 1), new Point(1 / Math.sqrt(3), - 1), new Point(1, -1 / Math.sqrt(3)), new Point(1, 1 / Math.sqrt(3)), new Point(1 / Math.sqrt(3), 1),new Point(-1 / Math.sqrt(3), 1),  new Point(-1, 1 / Math.sqrt(3)), new Point(-1, -1 / Math.sqrt(3)) };
+
+    public Point[] getSurfaceArrayOfIntegralPoints() {
+        return surfaceArrayOfIntegralPoints;
+    }
 
     private double[][] dnDksiValueArray = new double[4][4];
     private double[][] dnDetaValueArray = new double[4][4];
 
 
-    public void calculateDn_Dksi_Dn_Eta_Value() {
+    public double[][] calculateDnDksiValue() {
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
                 switch (j) {
                     case 0:
                         dnDksiValueArray[i][j] = -0.25 * (1 - ksiValueArray[i]);
-                        dnDetaValueArray[i][j] = -0.25 * (1 - etaValueArray[i]);
                         break;
                     case 1:
                         dnDksiValueArray[i][j] = 0.25 * (1 - ksiValueArray[i]);
-                        dnDetaValueArray[i][j] = -0.25 * (1 + etaValueArray[i]);
                         break;
                     case 2:
                         dnDksiValueArray[i][j] = 0.25 * (1 + ksiValueArray[i]);
-                        dnDetaValueArray[i][j] = 0.25 * (1 + etaValueArray[i]);
                         break;
                     case 3:
                         dnDksiValueArray[i][j] = -0.25 * (1 + ksiValueArray[i]);
+                        break;
+                }
+            }
+        }
+        return dnDksiValueArray;
+    }
+
+    public double [][] calculateDnEtaValue() {
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                switch (j) {
+                    case 0:
+                        dnDetaValueArray[i][j] = -0.25 * (1 - etaValueArray[i]);
+                        break;
+                    case 1:
+                        dnDetaValueArray[i][j] = -0.25 * (1 + etaValueArray[i]);
+                        break;
+                    case 2:
+                        dnDetaValueArray[i][j] = 0.25 * (1 + etaValueArray[i]);
+                        break;
+                    case 3:
                         dnDetaValueArray[i][j] = 0.25 * (1 - etaValueArray[i]);
                         break;
                 }
-                //show dN/dksi
-//                System.out.println(dnDksiValueArray[i][j]);
-                //show dN/deta
-//                System.out.println(dnDetaValueArray[i][j]);
             }
-//            System.out.println();
         }
+        return dnDetaValueArray;
     }
 
 

@@ -2,8 +2,7 @@ package main;
 
 public class BuilderMatrixHBC2D {
     private float convection = 300;
-    private AreaArray [] areaArray;
-    private double[] lengthSide = {0.03333, 0.03333,0.03333,0.03333};
+    private AreaArray[] areaArray;
 
     public void setDetJ(double[] detJ) {
         this.detJ = detJ;
@@ -13,44 +12,32 @@ public class BuilderMatrixHBC2D {
         return detJ;
     }
 
-    private double[] detJ = new double[4];
-    private double[][] area1 = new double[2][6];
-    private double[][] area1pc2 = new double[4][4];
+    private double[] detJ = new double[4];;
     private double[][] area1sum = new double[4][4];
-
-    private double[][] area2 = new double[2][6];
-    private double[][] area3 = new double[2][6];
-    private double[][] area4 = new double[2][6];
     private double[][] matrixH = new double[4][4];
 
-    private double[][] returnArea1 = new double[4][4];
-    private double[][] returnArea2 = new double[4][4];
-    private double[][] returnArea3 = new double[4][4];
-    private double[][] returnArea4 = new double[4][4];
-
-    private void printArray(double [][] array){
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                System.out.print(array[i][j] + " ");
-            }
-            System.out.println("");
-        }
-    }
 
     public BuilderMatrixHBC2D(AreaArray[] areaArray) {
         this.areaArray = areaArray;
     }
 
+    public double[] lengthSideCalculation(Element element) {
+        double[] lengthSideArray = new double[4];
+        for (int i = 0; i < 4; i++) {
+            lengthSideArray[i] = Math.sqrt(Math.pow(element.nodes[1].getxCoordinate() - element.nodes[0].getxCoordinate(), 2) + Math.pow(element.nodes[1].getyCoordinate() - element.nodes[0].getyCoordinate(), 2));
+        }
+        return lengthSideArray;
+    }
 
-    void matrixHCalculation(AreaArray areaArray, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
+
+    public double [][] matrixHCalculation(AreaArray areaArray, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
         System.out.println("");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 matrixH[i][j] = areaPc1[i][j] * areaArray.area[0] + areaPc2[i][j] * areaArray.area[1] + areaPc3[i][j] * areaArray.area[2] + areaPc4[i][j] * areaArray.area[3];
-                System.out.print(matrixH[i][j] + " ");
             }
-            System.out.println("");
         }
+        return matrixH;
     }
 
     double[][] copyArray(double[][] oldArray) {
@@ -64,142 +51,85 @@ public class BuilderMatrixHBC2D {
     }
 
 
-    void detJCalculations() {
+    public double[] detJCalculations(double[] lengthSideArray) {
         for (int i = 0; i < 4; i++) {
-            detJ[i] = lengthSide[i] / 2;
-            System.out.print(detJ[i] + " ");
+            detJ[i] = lengthSideArray[i] / 2;
         }
+        return detJ;
     }
 
-    void areaArrayInit(AreaArray areaArray) {
-        area1[0][0] = -0.5773502692;
-        area1[0][1] = -1;
-        area1[0][2] = 0.7886751346;
-        area1[0][3] = 0.2113248654;
-        area1[0][4] = 0;
-        area1[0][5] = 0;
+    public double[] N1N2N3N4Calculations(Point point1) {
+        double[] N1N2N3N4ArrayValueP1 = new double[4];
+        N1N2N3N4ArrayValueP1[0] = 0.25 * (1 - point1.getX()) * (1 - point1.getY());
+        N1N2N3N4ArrayValueP1[1] = 0.25 * (1 + point1.getX()) * (1 - point1.getY());
+        N1N2N3N4ArrayValueP1[2] = 0.25 * (1 + point1.getX()) * (1 + point1.getY());
+        N1N2N3N4ArrayValueP1[3] = 0.25 * (1 - point1.getX()) * (1 + point1.getY());
 
-        area1[1][0] = 0.5773502692;
-        area1[1][1] = -1;
-        area1[1][2] = 0.2113248654;
-        area1[1][3] = 0.7886751346;
-        area1[1][4] = 0;
-        area1[1][5] = 0;
+        VectorP vectorP1 = new VectorP();
+        VectorP vectorP2 = new VectorP();
+        vectorP1.vectorPCalculation(0.03333, 100, point1, 300);
 
-        area2[0][0] = 1;
-        area2[0][1] = -0.5773502692;
-        area2[0][2] = 0;
-        area2[0][3] = 0.7886751346;
-        area2[0][4] = 0.2113248654;
-        area2[0][5] = 0;
-
-        area2[1][0] = 1;
-        area2[1][1] = 0.5773502692;
-        area2[1][2] = 0;
-        area2[1][3] = 0.2113248654;
-        area2[1][4] = 0.7886751346;
-        area2[1][5] = 0;
-
-
-        area3[0][0] = 0.5773502692;
-        area3[0][1] = 1;
-        area3[0][2] = 0;
-        area3[0][3] = 0;
-        area3[0][4] = 0.7886751346;
-        area3[0][5] = 0.2113248654;
-
-        area3[1][0] = 0.5773502692;
-        area3[1][1] = 1;
-        area3[1][2] = 0;
-        area3[1][3] = 0;
-        area3[1][4] = 0.2113248654;
-        area3[1][5] = 0.7886751346;
-
-
-        area4[0][0] = -1;
-        area4[0][1] = 0.5773502692;
-        area4[0][2] = 0.2113248654;
-        area4[0][3] = 0;
-        area4[0][4] = 0;
-        area4[0][5] = 0.7886751346;
-
-        area4[1][0] = -1;
-        area4[1][1] = -0.5773502692;
-        area4[1][2] = 0.7886751346;
-        area4[1][3] = 0;
-        area4[1][4] = 0;
-        area4[1][5] = 0.2113248654;
-
-
-        returnArea1 = copyArray(areaCalculations(area1, 0));
-//        printArray(returnArea1);
-        returnArea2 = copyArray(areaCalculations(area2, 1));
-//        printArray(returnArea2);
-        returnArea3 = copyArray(areaCalculations(area3, 2));
-//        printArray(returnArea3);
-        returnArea4 = copyArray(areaCalculations(area4, 3));
-//        printArray(returnArea4);
-
-        matrixHCalculation(areaArray, returnArea1, returnArea2, returnArea3, returnArea4);
-
-
+        return N1N2N3N4ArrayValueP1;
     }
 
-    private double[][] areaCalculations(double[][] area1, int detJIndex) {
+    public double[][] areaCalculations(double[] areaPoint1, double[] areaPoint2, int detJIndex, double [] detJ) {
         double[][] area1pc1 = new double[4][4];
+        double[][] area1pc2 = new double[4][4];
+
+
 
         for (int i = 0; i < 4; i++) {
+
             switch (i) {
                 case 0:
-                    area1pc1[i][0] = area1[0][2] * area1[0][2] * convection;
-                    area1pc1[i][1] = area1[0][2] * area1[0][3] * convection;
-                    area1pc1[i][2] = area1[0][2] * area1[0][4] * convection;
-                    area1pc1[i][3] = area1[0][2] * area1[0][5] * convection;
+                    area1pc1[i][0] = areaPoint1[0] * areaPoint1[0] * convection;
+                    area1pc1[i][1] = areaPoint1[0] * areaPoint1[1] * convection;
+                    area1pc1[i][2] = areaPoint1[0] * areaPoint1[2] * convection;
+                    area1pc1[i][3] = areaPoint1[0] * areaPoint1[3] * convection;
 
-                    area1pc2[i][0] = area1[1][2] * area1[1][2] * convection;
-                    area1pc2[i][1] = area1[1][2] * area1[1][3] * convection;
-                    area1pc2[i][2] = area1[1][2] * area1[1][4] * convection;
-                    area1pc2[i][3] = area1[1][2] * area1[1][5] * convection;
+                    area1pc2[i][0] = areaPoint2[0] * areaPoint2[0] * convection;
+                    area1pc2[i][1] = areaPoint2[0] * areaPoint2[1] * convection;
+                    area1pc2[i][2] = areaPoint2[0] * areaPoint2[2] * convection;
+                    area1pc2[i][3] = areaPoint2[0] * areaPoint2[3] * convection;
 
                     break;
 
                 case 1:
-                    area1pc1[i][0] = area1[0][3] * area1[0][2] * convection;
-                    area1pc1[i][1] = area1[0][3] * area1[0][3] * convection;
-                    area1pc1[i][2] = area1[0][3] * area1[0][4] * convection;
-                    area1pc1[i][3] = area1[0][3] * area1[0][5] * convection;
+                    area1pc1[i][0] = areaPoint1[1] * areaPoint1[0] * convection;
+                    area1pc1[i][1] = areaPoint1[1] * areaPoint1[1] * convection;
+                    area1pc1[i][2] = areaPoint1[1] * areaPoint1[2] * convection;
+                    area1pc1[i][3] = areaPoint1[1] * areaPoint1[3] * convection;
 
-                    area1pc2[i][0] = area1[1][3] * area1[1][2] * convection;
-                    area1pc2[i][1] = area1[1][3] * area1[1][3] * convection;
-                    area1pc2[i][2] = area1[1][3] * area1[1][4] * convection;
-                    area1pc2[i][3] = area1[1][3] * area1[1][5] * convection;
+                    area1pc2[i][0] = areaPoint2[1] * areaPoint2[0] * convection;
+                    area1pc2[i][1] = areaPoint2[1] * areaPoint2[1] * convection;
+                    area1pc2[i][2] = areaPoint2[1] * areaPoint2[2] * convection;
+                    area1pc2[i][3] = areaPoint2[1] * areaPoint2[3] * convection;
 
                     break;
 
                 case 2:
-                    area1pc1[i][0] = area1[0][4] * area1[0][2] * convection;
-                    area1pc1[i][1] = area1[0][4] * area1[0][3] * convection;
-                    area1pc1[i][2] = area1[0][4] * area1[0][4] * convection;
-                    area1pc1[i][3] = area1[0][4] * area1[0][5] * convection;
+                    area1pc1[i][0] = areaPoint1[2] * areaPoint1[0] * convection;
+                    area1pc1[i][1] = areaPoint1[2] * areaPoint1[1] * convection;
+                    area1pc1[i][2] = areaPoint1[2] * areaPoint1[2] * convection;
+                    area1pc1[i][3] = areaPoint1[2] * areaPoint1[3] * convection;
 
-                    area1pc2[i][0] = area1[1][4] * area1[1][2] * convection;
-                    area1pc2[i][1] = area1[1][4] * area1[1][3] * convection;
-                    area1pc2[i][2] = area1[1][4] * area1[1][4] * convection;
-                    area1pc2[i][3] = area1[1][4] * area1[1][5] * convection;
+                    area1pc2[i][0] = areaPoint2[2] * areaPoint2[0] * convection;
+                    area1pc2[i][1] = areaPoint2[2] * areaPoint2[1] * convection;
+                    area1pc2[i][2] = areaPoint2[2] * areaPoint2[2] * convection;
+                    area1pc2[i][3] = areaPoint2[2] * areaPoint2[3] * convection;
 
                     break;
 
                 case 3:
-                    area1pc1[i][0] = area1[0][5] * area1[0][2] * convection;
-                    area1pc1[i][1] = area1[0][5] * area1[0][3] * convection;
-                    area1pc1[i][2] = area1[0][5] * area1[0][4] * convection;
-                    area1pc1[i][3] = area1[0][5] * area1[0][5] * convection;
+                    area1pc1[i][0] = areaPoint1[3] * areaPoint1[0] * convection;
+                    area1pc1[i][1] = areaPoint1[3] * areaPoint1[1] * convection;
+                    area1pc1[i][2] = areaPoint1[3] * areaPoint1[2] * convection;
+                    area1pc1[i][3] = areaPoint1[3] * areaPoint1[3] * convection;
 
-                    area1pc2[i][0] = area1[1][5] * area1[1][2] * convection;
-                    area1pc2[i][1] = area1[1][5] * area1[1][3] * convection;
-                    area1pc2[i][2] = area1[1][5] * area1[1][4] * convection;
-                    area1pc2[i][3] = area1[1][5] * area1[1][5] * convection;
-
+                    area1pc2[i][0] = areaPoint2[3] * areaPoint2[0] * convection;
+                    area1pc2[i][1] = areaPoint2[3] * areaPoint2[1] * convection;
+                    area1pc2[i][2] = areaPoint2[3] * areaPoint2[2] * convection;
+                    area1pc2[i][3] = areaPoint2[3] * areaPoint2[3] * convection;
                     break;
             }
         }

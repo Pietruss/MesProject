@@ -1,8 +1,6 @@
 package main;
 
 public class BuilderMatrixC {
-    private double conductivity = 700;
-    private double density = 7800;
     private double[] detJ;
     private double[][] N1N2N3N4 = new double[4][4];
     private double[] ksiValueArray = {-0.577350269189626, 0.577350269189626, 0.577350269189626, -0.577350269189626};
@@ -13,57 +11,39 @@ public class BuilderMatrixC {
     private double[][] pc4 = new double[4][4];
     private double[][] matrixC = new double[4][4];
 
-    void N1N2N3N4Calculations() {
-        System.out.println("------------");
+    public double [][] N1N2N3N4Calculations() {
         for (int i = 0; i < 4; i++) {
-            System.out.println("");
             switch (i) {
                 case 0:
                     N1N2N3N4[i][0] = 0.25 * (1 - ksiValueArray[0]) * (1 - etaValueArray[0]);
-                    System.out.print(N1N2N3N4[i][0] + " ");
                     N1N2N3N4[i][1] = 0.25 * (1 + ksiValueArray[0]) * (1 - etaValueArray[0]);
-                    System.out.print(N1N2N3N4[i][1] + " ");
                     N1N2N3N4[i][2] = 0.25 * (1 + ksiValueArray[0]) * (1 + etaValueArray[0]);
-                    System.out.print(N1N2N3N4[i][2] + " ");
                     N1N2N3N4[i][3] = 0.25 * (1 - ksiValueArray[0]) * (1 + etaValueArray[0]);
-                    System.out.print(N1N2N3N4[i][3] + " ");
                     break;
                 case 1:
                     N1N2N3N4[i][0] = 0.25 * (1 - ksiValueArray[1]) * (1 - etaValueArray[1]);
-                    System.out.print(N1N2N3N4[i][0] + " ");
                     N1N2N3N4[i][1] = 0.25 * (1 + ksiValueArray[1]) * (1 - etaValueArray[1]);
-                    System.out.print(N1N2N3N4[i][1] + " ");
                     N1N2N3N4[i][2] = 0.25 * (1 + ksiValueArray[1]) * (1 + etaValueArray[1]);
-                    System.out.print(N1N2N3N4[i][2] + " ");
                     N1N2N3N4[i][3] = 0.25 * (1 - ksiValueArray[1]) * (1 + etaValueArray[1]);
-                    System.out.print(N1N2N3N4[i][3] + " ");
                     break;
                 case 2:
                     N1N2N3N4[i][0] = 0.25 * (1 - ksiValueArray[2]) * (1 - etaValueArray[2]);
-                    System.out.print(N1N2N3N4[i][0] + " ");
                     N1N2N3N4[i][1] = 0.25 * (1 + ksiValueArray[2]) * (1 - etaValueArray[2]);
-                    System.out.print(N1N2N3N4[i][1] + " ");
                     N1N2N3N4[i][2] = 0.25 * (1 + ksiValueArray[2]) * (1 + etaValueArray[2]);
-                    System.out.print(N1N2N3N4[i][2] + " ");
                     N1N2N3N4[i][3] = 0.25 * (1 - ksiValueArray[2]) * (1 + etaValueArray[2]);
-                    System.out.print(N1N2N3N4[i][3] + " ");
                     break;
                 case 3:
                     N1N2N3N4[i][0] = 0.25 * (1 - ksiValueArray[3]) * (1 - etaValueArray[3]);
-                    System.out.print(N1N2N3N4[i][0] + " ");
                     N1N2N3N4[i][1] = 0.25 * (1 + ksiValueArray[3]) * (1 - etaValueArray[3]);
-                    System.out.print(N1N2N3N4[i][1] + " ");
                     N1N2N3N4[i][2] = 0.25 * (1 + ksiValueArray[3]) * (1 + etaValueArray[3]);
-                    System.out.print(N1N2N3N4[i][2] + " ");
                     N1N2N3N4[i][3] = 0.25 * (1 - ksiValueArray[3]) * (1 + etaValueArray[3]);
-                    System.out.print(N1N2N3N4[i][3] + " ");
                     break;
             }
         }
+        return N1N2N3N4;
     }
 
-    void pcNumberCalculations(BuilderMatrixH builderMatrixH) {
-        detJ = builderMatrixH.getDetJ();
+    void pcNumberCalculations(double[] detJ, double conductivity, double density) {
         for (int i = 0; i < 4; i++) {
             switch (i) {
                 case 0:
@@ -159,23 +139,12 @@ public class BuilderMatrixC {
         }
     }
 
-    void MatrixCCalculation() {
-        System.out.println("\n------------");
+    public double [][]  MatrixCCalculation() {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 matrixC[i][j] = pc1[i][j] + pc2[i][j] + pc3[i][j] + pc4[i][j];
-                System.out.print(matrixC[i][j] + " ");
             }
-            System.out.println("");
         }
-    }
-
-    void printArray(double [][]matrixGlobal){
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                System.out.println(matrixGlobal[i][j] + " ");
-            }
-            System.out.println("");
-        }
+        return matrixC;
     }
 }
