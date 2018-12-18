@@ -13,6 +13,9 @@ public class Main {
         double[][] globalMatrixHArray = new double[16][16];
         double[][] globalMatrixCArray = new double[16][16];
         double[] globalVectorPArray = new double[16];
+        double[] vectorPAfterCalculation = new double[16];
+        double[][] matrixHAfterCalculation = new double[16][16];
+        double[][] matrixHBC2DGlobal = new double[16][16];
 
         FileData fileData = new FileData();
         fileData.openFileAndReadData();
@@ -24,7 +27,7 @@ public class Main {
         Element[] elements = grid.nodeIDGeneration(fileData);
         grid.elementsGeneration(fileData);
         grid.nodesToElementsGeneration(fileData);
-//        for (int i = 0; i < fileData.getSimulationTime(); i += fileData.getSimulationStepTime()) {
+//        for (double i = 0; i < fileData.getSimulationTime(); i += fileData.getSimulationStepTime()) {
         for (int j = 0; j < 9; j++) {
             int[] globalId = new int[4];
             globalId[0] = elements[j].nodeID[0];
@@ -68,7 +71,7 @@ public class Main {
             double[][] N1N2N3N4 = builderMatrixC.N1N2N3N4Calculations();
             builderMatrixC.pcNumberCalculations(detJ, fileData.getSpecificHeat(), fileData.getDensity());
             double[][] matricCLocal = builderMatrixC.MatrixCCalculation();
-            arrayToGlobal(localId, globalId, matricCLocal, globalMatrixCArray);
+            globalMatrixCArray = arrayToGlobal(localId, globalId, matricCLocal, globalMatrixCArray);
             AreaArray[] areaArray;
             AreaGenerator areaGenerator = new AreaGenerator();
             areaArray = areaGenerator.areaStatusGenerator(grid, fileData);
@@ -133,12 +136,19 @@ public class Main {
             builderMatrixHBC2D.areaCalculations(areaPoint7, areaPoint8, 3, lengthSideArrayDetJ);
             double[][] areaSum4 = copyArray(builderMatrixHBC2D.areaCalculations(areaPoint7, areaPoint8, 3, lengthSideArrayDetJ));
 
-            builderMatrixHBC2D.matrixHCalculation(areaArray[j], areaSum1, areaSum2, areaSum3, areaSum4);
+            double[][] localHBC2D = builderMatrixHBC2D.matrixHCalculation(areaArray[j], areaSum1, areaSum2, areaSum3, areaSum4);
+            matrixHBC2DGlobal = arrayToGlobal(localId, globalId, localHBC2D, matrixHBC2DGlobal);
+//
 
         }
-        showGlobalArrayVectorP(globalVectorPArray);
-//        printGlobalArray(globalMatrixHArray);
-//        printGlobalArray(globalMatrixCArray);
+        matrixHAfterCalculation = globalMatrixHCalculation(globalMatrixHArray, globalMatrixCArray, fileData.getSimulationStepTime(), matrixHBC2DGlobal);
+        vectorPAfterCalculation = globalVectorPOperation(globalVectorPArray, globalMatrixCArray, fileData.getSimulationStepTime(), fileData.getInitialTemperature());
+        //
+//  showGlobalArrayVectorP(vectorPAfterCalculation);
+//        showGlobalArray(matrixHAfterCalculation);
+        showGlobalArrayVectorP(vectorPAfterCalculation);
+//        showGlobalArray(globalMatrixHArray);
+//        showGlobalArray(globalMatrixCArray);
 
 //        }
 
@@ -190,7 +200,7 @@ public class Main {
         return globalArray;
     }
 
-    private static void printGlobalArray(double[][] globalArray) {
+    private static void showGlobalArray(double[][] globalArray) {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 System.out.print(globalArray[i][j] + " ");
@@ -223,8 +233,34 @@ public class Main {
 
     private static void showGlobalArrayVectorP(double[] array) {
         for (int i = 0; i < array.length; i++) {
-            System.out.print(array[i] + " ");
+            System.out.println(array[i] + " ");
         }
-        System.out.println("");
     }
+
+    private static double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double t0) {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                globalMatrixC[i][j] /= dt;
+                globalMatrixC[i][j] *= t0;
+            }
+        }
+        double[] returnArray = new double[16];
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                returnArray[i] += globalMatrixC[i][j] * globalVectorP[i];
+            }
+        }
+
+        return returnArray;
+    }
+
+    private static double[][] globalMatrixHCalculation(double[][] matrixH, double[][] matrixC, double dt, double[][] matrixHBC2D) {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                matrixH[i][j] += matrixC[i][j] / dt + matrixHBC2D[i][j];
+            }
+        }
+        return matrixH;
+    }
+
 }

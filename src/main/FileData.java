@@ -38,7 +38,7 @@ public class FileData {
     public int coefficientAlpha;
     public int InitialTemperature;
     public int simulationTime;
-    public int simulationStepTime;
+    public double simulationStepTime;
     public int ambientTemperature;
     public double specificHeat;
     public double conductivity;
@@ -48,7 +48,7 @@ public class FileData {
         return simulationTime;
     }
 
-    public int getSimulationStepTime() {
+    public double getSimulationStepTime() {
         return simulationStepTime;
     }
 
@@ -78,7 +78,7 @@ public class FileData {
             } else if (counterToReadFromFile == 1) {
                 simulationTime = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 2) {
-                simulationStepTime = Integer.parseInt(String.valueOf(scanner.nextInt()));
+                simulationStepTime = Double.parseDouble(String.valueOf(scanner.next()));
             } else if (counterToReadFromFile == 3) {
                 ambientTemperature = Integer.parseInt(String.valueOf(scanner.nextInt()));
             } else if (counterToReadFromFile == 4) {
