@@ -11,6 +11,10 @@ public class Node implements ShowNode {
         return yCoordinate;
     }
 
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
     double xCoordinate, yCoordinate, temperature;
     boolean borderCondition = false;
 

@@ -1,7 +1,6 @@
 package main;
 
 public class BuilderMatrixHBC2D {
-    private float convection = 300;
     private AreaArray[] areaArray;
 
     public void setDetJ(double[] detJ) {
@@ -65,14 +64,13 @@ public class BuilderMatrixHBC2D {
         N1N2N3N4ArrayValueP1[2] = 0.25 * (1 + point1.getX()) * (1 + point1.getY());
         N1N2N3N4ArrayValueP1[3] = 0.25 * (1 - point1.getX()) * (1 + point1.getY());
 
-        VectorP vectorP1 = new VectorP();
-        VectorP vectorP2 = new VectorP();
-        vectorP1.vectorPCalculation(0.03333, 100, point1, 300);
+//        VectorP vectorP1 = new VectorP();
+//        vectorP1.vectorPCalculation(0.03333, 100, point1, 300);
 
         return N1N2N3N4ArrayValueP1;
     }
 
-    public double[][] areaCalculations(double[] areaPoint1, double[] areaPoint2, int detJIndex, double [] detJ) {
+    public double[][] areaCalculations(double[] areaPoint1, double[] areaPoint2, int detJIndex, double [] detJ, double convection) {
         double[][] area1pc1 = new double[4][4];
         double[][] area1pc2 = new double[4][4];
 

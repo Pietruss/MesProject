@@ -1,7 +1,6 @@
 package main;
 
 public class VectorP {
-    Point[] points = new Point[4];
 
     public double[] vectorPCalculation(double lengthOfSide, double t0, Point point, double alphaCoefficient) {
         double[] nCaulculation = new double[4];
