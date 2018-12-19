@@ -28,15 +28,14 @@ public class Main {
         grid.elementsGeneration(fileData);
         grid.nodesToElementsGeneration(fileData);
         GaussMethod gaussMethod = new GaussMethod();
-        double [] arrayOfTemperature = new double[fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements()];
+        double[] arrayOfTemperature = new double[fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements()];
 
         //initalization arrayOfTemperature
         for (int q = 0; q < 16; q++) {
             grid.nodes[q].setTemperature(fileData.getInitialTemperature());
             arrayOfTemperature[q] = grid.nodes[q].getTemperature();
-            System.out.print(arrayOfTemperature[q] + " ");
         }
-        System.out.println("");
+        showNodesTemperature(arrayOfTemperature);
 
 
         for (double i = 0; i < fileData.getSimulationTime(); i += fileData.getSimulationStepTime()) {
@@ -146,8 +145,9 @@ public class Main {
 
             for (int q = 0; q < arrayOfTemperature.length; q++) {
                 grid.nodes[q].setTemperature(arrayOfTemperature[q]);
-                System.out.print(grid.nodes[q].getTemperature() + " ");
             }
+
+            showNodesTemperature(arrayOfTemperature);
 
             showGlobalArrayVectorP(vectorPAfterCalculation);
             showGlobalArray(matrixHAfterCalculation);
@@ -226,7 +226,7 @@ public class Main {
         }
     }
 
-    private static double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double [] temperature) {
+    private static double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double[] temperature) {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 globalMatrixC[i][j] /= dt;
@@ -249,6 +249,16 @@ public class Main {
             }
         }
         return matrixH;
+    }
+
+    private static void showNodesTemperature(double[] temperature) {
+        for (int j = 0; j < 16; j++) {
+            System.out.print(temperature[j] + " ");
+            if (j == 3 || j == 7 || j == 11) {
+                System.out.println("");
+            }
+        }
+        System.out.println("");
     }
 
 }
