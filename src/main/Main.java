@@ -28,6 +28,17 @@ public class Main {
         grid.elementsGeneration(fileData);
         grid.nodesToElementsGeneration(fileData);
         GaussMethod gaussMethod = new GaussMethod();
+        double [] arrayOfTemperature = new double[fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements()];
+
+        //initalization arrayOfTemperature
+        for (int q = 0; q < 16; q++) {
+            grid.nodes[q].setTemperature(fileData.getInitialTemperature());
+            arrayOfTemperature[q] = grid.nodes[q].getTemperature();
+            System.out.print(arrayOfTemperature[q] + " ");
+        }
+        System.out.println("");
+
+
         for (double i = 0; i < fileData.getSimulationTime(); i += fileData.getSimulationStepTime()) {
             for (int j = 0; j < (fileData.getGridWidthNumberOfElements() - 1) * (fileData.getGridHeightNumberOfElements() - 1); j++) {
                 int[] globalId = new int[4];
@@ -129,12 +140,13 @@ public class Main {
 
             }
             matrixHAfterCalculation = globalMatrixHCalculation(globalMatrixHArray, globalMatrixCArray, fileData.getSimulationStepTime(), matrixHBC2DGlobal);
-            vectorPAfterCalculation = globalVectorPOperation(globalVectorPArray, globalMatrixCArray, fileData.getSimulationStepTime(), fileData.getInitialTemperature());
+            vectorPAfterCalculation = globalVectorPOperation(globalVectorPArray, globalMatrixCArray, fileData.getSimulationStepTime(), arrayOfTemperature);
 
-            double[] finalNodeTemperature = gaussMethod.GaussCalculation(fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements(), matrixHAfterCalculation, vectorPAfterCalculation);
+            arrayOfTemperature = gaussMethod.GaussCalculation(fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements(), matrixHAfterCalculation, vectorPAfterCalculation);
 
-            for (int q = 0; q < finalNodeTemperature.length; q++) {
-                grid.nodes[q].setTemperature(finalNodeTemperature[q]);
+            for (int q = 0; q < arrayOfTemperature.length; q++) {
+                grid.nodes[q].setTemperature(arrayOfTemperature[q]);
+                System.out.print(grid.nodes[q].getTemperature() + " ");
             }
 
             showGlobalArrayVectorP(vectorPAfterCalculation);
@@ -214,11 +226,11 @@ public class Main {
         }
     }
 
-    private static double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double t0) {
+    private static double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double [] temperature) {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 globalMatrixC[i][j] /= dt;
-                globalMatrixC[i][j] *= t0;
+                globalMatrixC[j][i] *= temperature[i];
             }
         }
         for (int i = 0; i < 16; i++) {

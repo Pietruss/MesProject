@@ -64,9 +64,6 @@ public class BuilderMatrixHBC2D {
         N1N2N3N4ArrayValueP1[2] = 0.25 * (1 + point1.getX()) * (1 + point1.getY());
         N1N2N3N4ArrayValueP1[3] = 0.25 * (1 - point1.getX()) * (1 + point1.getY());
 
-//        VectorP vectorP1 = new VectorP();
-//        vectorP1.vectorPCalculation(0.03333, 100, point1, 300);
-
         return N1N2N3N4ArrayValueP1;
     }
 

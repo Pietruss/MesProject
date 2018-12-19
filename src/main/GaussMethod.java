@@ -1,43 +1,43 @@
 package main;
 
 public class GaussMethod {
-    public static double[] GaussCalculation(int n, double[][] gik, double[] rok) {
+    public static double[] GaussCalculation(int numberOfElementsInArray, double[][] globalMatrixH, double[] globalVectorP) {
         double m, s, e;
         e = Math.pow(10, -12);
-        double[] tabResult = new double[n];
+        double[] tabResult = new double[numberOfElementsInArray];
 
-        double[][] tabAB = new double[n][n + 1];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                tabAB[j][i] = gik[j][i];
+        double[][] tabAB = new double[numberOfElementsInArray][numberOfElementsInArray + 1];
+        for (int i = 0; i < numberOfElementsInArray; i++) {
+            for (int j = 0; j < numberOfElementsInArray; j++) {
+                tabAB[j][i] = globalMatrixH[j][i];
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            tabAB[i][n] = rok[i];
+        for (int i = 0; i < numberOfElementsInArray; i++) {
+            tabAB[i][numberOfElementsInArray] = globalVectorP[i];
         }
 
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
+        for (int i = 0; i < numberOfElementsInArray - 1; i++) {
+            for (int j = i + 1; j < numberOfElementsInArray; j++) {
                 if (Math.abs(tabAB[i][i]) < e) {
-                    System.err.println("dzielnik rowny 0");
+                    System.err.println("Can not divide by 0");
                     break;
                 }
 
                 m = -tabAB[j][i] / tabAB[i][i];
-                for (int k = 0; k < n + 1; k++) {
+                for (int k = 0; k < numberOfElementsInArray + 1; k++) {
                     tabAB[j][k] += m * tabAB[i][k];
                 }
             }
         }
 
-        for (int i = n - 1; i >= 0; i--) {
-            s = tabAB[i][n];
-            for (int j = n - 1; j >= 0; j--) {
+        for (int i = numberOfElementsInArray - 1; i >= 0; i--) {
+            s = tabAB[i][numberOfElementsInArray];
+            for (int j = numberOfElementsInArray - 1; j >= 0; j--) {
                 s -= tabAB[i][j] * tabResult[j];
             }
             if (Math.abs(tabAB[i][i]) < e) {
-                System.err.println("dzielnik rowny 0");
+                System.err.println("Can not divide by 0");
                 break;
             }
             tabResult[i] = s / tabAB[i][i];

@@ -15,6 +15,10 @@ public class Node implements ShowNode {
         this.temperature = temperature;
     }
 
+    public double getTemperature() {
+        return temperature;
+    }
+
     double xCoordinate, yCoordinate, temperature;
     boolean borderCondition = false;
 
