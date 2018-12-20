@@ -28,11 +28,7 @@ public class Grid {
                 nodeID[3] = j + 1 + i * fileData.getGridHeightNumberOfElements();
 
                 this.elements[counterOfElements] = new Element(nodeID, fileData.getConductivity());
-
-                //show all id of element
-
                 this.elements[counterOfElements++].showElement();
-
             }
         }
         return this.elements;

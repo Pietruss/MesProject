@@ -1,7 +1,7 @@
 package main;
 
 public class GaussMethod {
-    public static double[] GaussCalculation(int numberOfElementsInArray, double[][] globalMatrixH, double[] globalVectorP) {
+    protected double[] GaussCalculation(int numberOfElementsInArray, double[][] globalMatrixH, double[] globalVectorP) {
         double m, s, e;
         e = Math.pow(10, -12);
         double[] tabResult = new double[numberOfElementsInArray];

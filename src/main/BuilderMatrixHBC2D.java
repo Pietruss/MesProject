@@ -11,7 +11,7 @@ public class BuilderMatrixHBC2D {
         return detJ;
     }
 
-    private double[] detJ = new double[4];;
+    private double[] detJ = new double[4];
     private double[][] area1sum = new double[4][4];
     private double[][] matrixH = new double[4][4];
 
@@ -30,7 +30,6 @@ public class BuilderMatrixHBC2D {
 
 
     public double [][] matrixHCalculation(AreaArray areaArray, double[][] areaPc1, double[][] areaPc2, double[][] areaPc3, double[][] areaPc4) {
-        System.out.println("");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 matrixH[i][j] = areaPc1[i][j] * areaArray.area[0] + areaPc2[i][j] * areaArray.area[1] + areaPc3[i][j] * areaArray.area[2] + areaPc4[i][j] * areaArray.area[3];
@@ -38,17 +37,6 @@ public class BuilderMatrixHBC2D {
         }
         return matrixH;
     }
-
-    double[][] copyArray(double[][] oldArray) {
-        double[][] newArray = new double[4][4];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                newArray[i][j] = oldArray[i][j];
-            }
-        }
-        return newArray;
-    }
-
 
     public double[] detJCalculations(double[] lengthSideArray) {
         for (int i = 0; i < 4; i++) {
