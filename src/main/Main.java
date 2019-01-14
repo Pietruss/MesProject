@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
-        int[] localId = {1,2,3,4};
+        int[] localId = {1, 2, 3, 4};
         double[][] globalMatrixHArray = new double[16][16];
         double[][] globalMatrixCArray = new double[16][16];
         double[] globalVectorPArray = new double[16];
@@ -25,14 +25,15 @@ public class Main {
         grid.nodesToElementsGeneration(fileData);
         GaussMethod gaussMethod = new GaussMethod();
         GlobalOperations globalOperations = new GlobalOperations();
-        double[] arrayOfTemperature = new double[fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements()];
+        double[] arrayOfTemperature;
 
-        //initalization arrayOfTemperature
+
         for (int q = 0; q < 16; q++) {
             grid.nodes[q].setTemperature(fileData.getInitialTemperature());
-            arrayOfTemperature[q] = grid.nodes[q].getTemperature();
+            System.out.print(grid.nodes[q].getTemperature() + " ");
         }
-        globalOperations.showNodesTemperature(arrayOfTemperature);
+        System.out.println("\n");
+
 
 
         for (double i = 0; i < fileData.getSimulationTime(); i += fileData.getSimulationStepTime()) {
@@ -45,9 +46,9 @@ public class Main {
                 BuilderJacobian2D builderJacobian2D = new BuilderJacobian2D();
                 universalElement.calculateDnDksiValue();
                 universalElement.calculateDnEtaValue();
-                builderJacobian2D.integralPointsCalculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]);
-                double[] detJ = builderJacobian2D.detJCalculation(builderJacobian2D.integralPointsCalculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]));
-                builderJacobian2D.buildJ_1_1_1Calculation(builderJacobian2D.integralPointsCalculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]), builderJacobian2D.detJCalculation(builderJacobian2D.integralPointsCalculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j])));
+                builderJacobian2D.buildJ_1_1Calculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]);
+                double[] detJ = builderJacobian2D.detJCalculation(builderJacobian2D.buildJ_1_1Calculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]));
+                builderJacobian2D.buildJ_1_1_1Calculation(builderJacobian2D.buildJ_1_1Calculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j]), builderJacobian2D.detJCalculation(builderJacobian2D.buildJ_1_1Calculation(universalElement.getDnDksiValueArray(), universalElement.getDnDetaValueArray(), elements[j])));
 
                 BuilderMatrixH builderMatrixH = new BuilderMatrixH();
                 builderMatrixH.dnDxCalculation(universalElement, builderJacobian2D);
@@ -74,12 +75,13 @@ public class Main {
 
                 double[] areaPoint1 = builderMatrixHBC2D.N1N2N3N4Calculations(points[0]);
                 double[] areaPoint2 = builderMatrixHBC2D.N1N2N3N4Calculations(points[1]);
+
                 VectorP vectorP = new VectorP();
 
                 if (areaArray[j].area[0] == 1) {
-                    double p1Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[0], fileData.getCoefficientAlpha());
+                    double p1Array[] = vectorP.vectorPCalculation((fileData.getGridWidth()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[0], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p1Array, globalVectorPArray);
-                    double p2Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[1], fileData.getCoefficientAlpha());
+                    double p2Array[] = vectorP.vectorPCalculation((fileData.getGridWidth()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[1], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p2Array, globalVectorPArray);
                 }
 
@@ -91,9 +93,9 @@ public class Main {
                 double[] areaPoint4 = builderMatrixHBC2D.N1N2N3N4Calculations(points[3]);
 
                 if (areaArray[j].area[1] == 1) {
-                    double p3Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[2], fileData.getCoefficientAlpha());
+                    double p3Array[] = vectorP.vectorPCalculation((fileData.getGridHeight()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[2], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p3Array, globalVectorPArray);
-                    double p4Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[3], fileData.getCoefficientAlpha());
+                    double p4Array[] = vectorP.vectorPCalculation((fileData.getGridHeight()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[3], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p4Array, globalVectorPArray);
                 }
 
@@ -101,9 +103,9 @@ public class Main {
                 double[][] areaSum2 = globalOperations.copyArray(builderMatrixHBC2D.areaCalculations(areaPoint3, areaPoint4, 1, lengthSideArrayDetJ, fileData.getCoefficientAlpha()));
 
                 if (areaArray[j].area[2] == 1) {
-                    double p5Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[4], fileData.getCoefficientAlpha());
+                    double p5Array[] = vectorP.vectorPCalculation((fileData.getGridWidth()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[4], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p5Array, globalVectorPArray);
-                    double p6Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[5], fileData.getCoefficientAlpha());
+                    double p6Array[] = vectorP.vectorPCalculation((fileData.getGridWidth()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[5], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p6Array, globalVectorPArray);
                 }
 
@@ -115,9 +117,9 @@ public class Main {
                 double[][] areaSum3 = globalOperations.copyArray(builderMatrixHBC2D.areaCalculations(areaPoint5, areaPoint6, 2, lengthSideArrayDetJ, fileData.getCoefficientAlpha()));
 
                 if (areaArray[j].area[3] == 1) {
-                    double p7Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[6], fileData.getCoefficientAlpha());
+                    double p7Array[] = vectorP.vectorPCalculation((fileData.getGridHeight()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[6], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p7Array, globalVectorPArray);
-                    double p8Array[] = vectorP.vectorPCalculation(0.03333, fileData.getAmbientTemperature(), points[7], fileData.getCoefficientAlpha());
+                    double p8Array[] = vectorP.vectorPCalculation((fileData.getGridHeight()) / (fileData.getGridHeightNumberOfElements()- 1), fileData.getAmbientTemperature(), points[7], fileData.getCoefficientAlpha());
                     globalOperations.vectorPToGlobal(localId, globalId, p8Array, globalVectorPArray);
                 }
 
@@ -129,29 +131,28 @@ public class Main {
                 double[][] localHBC2D = builderMatrixHBC2D.matrixHCalculation(areaArray[j], areaSum1, areaSum2, areaSum3, areaSum4);
                 globalMatrixHBC2D = globalOperations.arrayToGlobal(localId, globalId, localHBC2D, globalMatrixHBC2D);
 
-
             }
             //global Matrix and VectorP operations
+//                System.out.println("-------------");
+//                globalOperations.showGlobalArray(globalMatrixCArray);
+//                System.out.println("-------------");
             matrixHAfterCalculation = globalOperations.globalMatrixHCalculation(globalMatrixHArray, globalMatrixCArray, fileData.getSimulationStepTime(), globalMatrixHBC2D);
-            vectorPAfterCalculation = globalOperations.globalVectorPOperation(globalVectorPArray, globalMatrixCArray, fileData.getSimulationStepTime(), arrayOfTemperature);
+            vectorPAfterCalculation = globalOperations.globalVectorPOperation(globalVectorPArray, globalMatrixCArray, fileData.getSimulationStepTime(), grid);
 
             // result of gaussMethod
             arrayOfTemperature = gaussMethod.GaussCalculation(fileData.getGridHeightNumberOfElements() * fileData.getGridWidthNumberOfElements(), matrixHAfterCalculation, vectorPAfterCalculation);
 
-            // set temperature to nodes
-            for (int q = 0; q < arrayOfTemperature.length; q++) {
-                grid.nodes[q].setTemperature(arrayOfTemperature[q]);
-            }
-
             // show important value
-            System.out.println("Number of iteration: " + i / 50);
+            System.out.println("Number of iteration: " + i / fileData.getSimulationStepTime());
+
             globalOperations.showNodesTemperature(arrayOfTemperature);
-            globalOperations.showGlobalArrayVectorP(globalVectorPArray);
-            globalOperations.showGlobalArray(globalMatrixHArray);
+//            globalOperations.showGlobalArrayVectorP(globalVectorPArray);
+//            globalOperations.showGlobalArray(globalMatrixHArray);
 
 
             // matrix reset
             for (int w = 0; w < 16; w++) {
+                grid.nodes[w].setTemperature(arrayOfTemperature[w]);
                 for (int r = 0; r < 16; r++) {
                     globalMatrixHArray[w][r] = 0;
                     globalMatrixCArray[w][r] = 0;

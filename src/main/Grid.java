@@ -43,8 +43,6 @@ public class Grid {
                 if (i == 0 || i == fileData.getGridWidthNumberOfElements() - 1 || j == 0 || j == fileData.getGridHeightNumberOfElements() - 1) {
                     this.nodes[counterOfElements].borderCondition = true;
                 }
-
-                //show all information about node
                 this.nodes[counterOfElements++].showNode();
             }
         }

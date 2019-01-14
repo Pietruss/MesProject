@@ -1,5 +1,7 @@
 package main;
 
+import java.text.DecimalFormat;
+
 public class GlobalOperations {
 
     protected double[][] arrayToGlobal(int[] localId, int[] globalId, double[][] localArray, double[][] globalArray) {
@@ -29,11 +31,11 @@ public class GlobalOperations {
         return globalArray;
     }
 
-    protected double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, double[] temperature) {
+    protected double[] globalVectorPOperation(double[] globalVectorP, double[][] globalMatrixC, double dt, Grid grid) {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 globalMatrixC[i][j] /= dt;
-                globalMatrixC[j][i] *= temperature[i];
+                globalMatrixC[j][i] *= grid.nodes[i].getTemperature();
             }
         }
         for (int i = 0; i < 16; i++) {
@@ -55,9 +57,11 @@ public class GlobalOperations {
     }
 
     protected void showGlobalArray(double[][] globalArray) {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(4);
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
-                System.out.print(globalArray[i][j] + " ");
+                System.out.print(df.format(globalArray[i][j]) + " ");
             }
             System.out.println("");
         }
@@ -74,9 +78,12 @@ public class GlobalOperations {
     }
 
     protected void showGlobalArrayVectorP(double[] array) {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(3);
         System.out.println("ShowGlobalArrayVectorPMethod: ");
         for(double i: array){
-            System.out.print(i + " ");
+            System.out.print(df.format(i));
+            System.out.print(" ");
         }
         System.out.println("\n");
     }

@@ -59,61 +59,10 @@ public class BuilderMatrixHBC2D {
         double[][] area1pc1 = new double[4][4];
         double[][] area1pc2 = new double[4][4];
 
-
-
         for (int i = 0; i < 4; i++) {
-
-            switch (i) {
-                case 0:
-                    area1pc1[i][0] = areaPoint1[0] * areaPoint1[0] * convection;
-                    area1pc1[i][1] = areaPoint1[0] * areaPoint1[1] * convection;
-                    area1pc1[i][2] = areaPoint1[0] * areaPoint1[2] * convection;
-                    area1pc1[i][3] = areaPoint1[0] * areaPoint1[3] * convection;
-
-                    area1pc2[i][0] = areaPoint2[0] * areaPoint2[0] * convection;
-                    area1pc2[i][1] = areaPoint2[0] * areaPoint2[1] * convection;
-                    area1pc2[i][2] = areaPoint2[0] * areaPoint2[2] * convection;
-                    area1pc2[i][3] = areaPoint2[0] * areaPoint2[3] * convection;
-
-                    break;
-
-                case 1:
-                    area1pc1[i][0] = areaPoint1[1] * areaPoint1[0] * convection;
-                    area1pc1[i][1] = areaPoint1[1] * areaPoint1[1] * convection;
-                    area1pc1[i][2] = areaPoint1[1] * areaPoint1[2] * convection;
-                    area1pc1[i][3] = areaPoint1[1] * areaPoint1[3] * convection;
-
-                    area1pc2[i][0] = areaPoint2[1] * areaPoint2[0] * convection;
-                    area1pc2[i][1] = areaPoint2[1] * areaPoint2[1] * convection;
-                    area1pc2[i][2] = areaPoint2[1] * areaPoint2[2] * convection;
-                    area1pc2[i][3] = areaPoint2[1] * areaPoint2[3] * convection;
-
-                    break;
-
-                case 2:
-                    area1pc1[i][0] = areaPoint1[2] * areaPoint1[0] * convection;
-                    area1pc1[i][1] = areaPoint1[2] * areaPoint1[1] * convection;
-                    area1pc1[i][2] = areaPoint1[2] * areaPoint1[2] * convection;
-                    area1pc1[i][3] = areaPoint1[2] * areaPoint1[3] * convection;
-
-                    area1pc2[i][0] = areaPoint2[2] * areaPoint2[0] * convection;
-                    area1pc2[i][1] = areaPoint2[2] * areaPoint2[1] * convection;
-                    area1pc2[i][2] = areaPoint2[2] * areaPoint2[2] * convection;
-                    area1pc2[i][3] = areaPoint2[2] * areaPoint2[3] * convection;
-
-                    break;
-
-                case 3:
-                    area1pc1[i][0] = areaPoint1[3] * areaPoint1[0] * convection;
-                    area1pc1[i][1] = areaPoint1[3] * areaPoint1[1] * convection;
-                    area1pc1[i][2] = areaPoint1[3] * areaPoint1[2] * convection;
-                    area1pc1[i][3] = areaPoint1[3] * areaPoint1[3] * convection;
-
-                    area1pc2[i][0] = areaPoint2[3] * areaPoint2[0] * convection;
-                    area1pc2[i][1] = areaPoint2[3] * areaPoint2[1] * convection;
-                    area1pc2[i][2] = areaPoint2[3] * areaPoint2[2] * convection;
-                    area1pc2[i][3] = areaPoint2[3] * areaPoint2[3] * convection;
-                    break;
+            for (int j = 0; j < 4; j++) {
+                area1pc1[i][j] = areaPoint1[i] * areaPoint1[j] * convection;
+                area1pc2[i][j] = areaPoint2[i] * areaPoint2[j] * convection;
             }
         }
         for (int i = 0; i < 4; i++) {

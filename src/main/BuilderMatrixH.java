@@ -10,13 +10,9 @@ public class BuilderMatrixH {
         return buildJ_1_1_1Array;
     }
 
-    public double[][] getIntegralPoints() {
-        return integralPoints;
-    }
-
     private double[] detJ = new double[4];
     private double[][] buildJ_1_1_1Array = new double[4][4];
-    private double[][] integralPoints = new double[4][4];
+    private double[][] buildJ_1_1Array = new double[4][4];
 
     private double[][] dnDxValueArray = new double[4][4];
     private double[][] dnDyValueArray = new double[4][4];

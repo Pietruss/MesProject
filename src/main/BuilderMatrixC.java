@@ -1,7 +1,6 @@
 package main;
 
 public class BuilderMatrixC {
-    private double[] detJ;
     private double[][] N1N2N3N4 = new double[4][4];
     private double[] ksiValueArray = {-0.577350269189626, 0.577350269189626, 0.577350269189626, -0.577350269189626};
     private double[] etaValueArray = {-0.577350269189626, -0.577350269189626, 0.577350269189626, 0.577350269189626};

@@ -13,7 +13,7 @@ public class UniversalElement {
     private double[][] dnDksiValueArray = new double[4][4];
     private double[][] dnDetaValueArray = new double[4][4];
 
-
+    //calculation dnDksi which will be used in Jacobian 2D
     public double[][] calculateDnDksiValue() {
 
         for (int i = 0; i < 4; ++i) {
@@ -37,6 +37,7 @@ public class UniversalElement {
         return dnDksiValueArray;
     }
 
+    //calculation DnDEta which will be used in Jacobian2D
     public double [][] calculateDnEtaValue() {
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
